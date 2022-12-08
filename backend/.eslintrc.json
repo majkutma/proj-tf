@@ -1,0 +1,23 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "extends": "standard-with-typescript",
+    "parserOptions": {
+        "ecmaVersion": 2022,
+        "project": "tsconfig.json",
+        "tsconfigRootDir": "C:/Users/fvg3843/PROJECTS/PROJ/proj-tf/backend/integration/my-integration-lambda",
+        "sourceType": "module"
+    },
+    "rules": {
+      // "no-console": "off",
+      // 'arrow-body-style': ['error', 'as-needed', { requireReturnForObjectLiteral: true }],
+      // "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
+      // 'no-implicit-globals': 'error',
+      // "no-shadow": "warn",
+      // "import/prefer-default-export": "off"
+    }
+  }
