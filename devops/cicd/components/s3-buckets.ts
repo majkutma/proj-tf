@@ -1,5 +1,5 @@
 import { TerraformStack } from 'cdktf'
-import { S3Bucket } from '@cdktf/provider-aws/lib/s3-bucket'
+import * as aws from '@cdktf/provider-aws'
 import { getResourceId } from '../utils/param-utils'
 
 const bucketOptions = {
@@ -12,8 +12,8 @@ const bucketOptions = {
 /**
  * Configuring myBucket bucket
  */
-export const myBucket = (stack: TerraformStack): S3Bucket => {
-  return new S3Bucket(stack, 'my-bucket', {
+export const myBucket = (stack: TerraformStack): aws.s3Bucket.S3Bucket => {
+  return new aws.s3Bucket.S3Bucket(stack, 'my-bucket', {
     ...bucketOptions
   })
 }

@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "zip": "7z a -tzip C:/Users/fvg3843/PROJECTS/PROJ/proj-tf/backend/integration/my-integration-lambda/fil.zip C:/Users/fvg3843/PROJECTS/PROJ/proj-tf/backend/integration/my-integration-lambda/dist",
     "lint": "npx eslint ./**/**/src/*",
     "fix": "npx eslint --fix ./**/**/src/*",
     "test": "echo \"Error: no test specified\" && exit 1"
