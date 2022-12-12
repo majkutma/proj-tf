@@ -8,6 +8,7 @@ import { TerraformStack, TerraformVariable } from 'cdktf'
 import * as aws from '@cdktf/provider-aws'
 import { getResourceId } from '../utils/param-utils'
 import { REPOSITORY, PATH } from '../constants/repo-info'
+import { MY_SECRET_VAL } from '../constants/.secrets'
 
 const bld = {
   version: 1,
@@ -66,7 +67,7 @@ export const mySecret = (stack: TerraformStack): TerraformVariable => {
   return new TerraformVariable(stack, 'my-secret', {
     type: 'string',
     description: 'github-token',
-    // default: process.env.TF_VAR_mySecret,
+    default: MY_SECRET_VAL,
     sensitive: true
   })
 }

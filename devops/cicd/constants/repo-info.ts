@@ -1,3 +1,2 @@
-export const OWNER = 'majkutma'
-export const REPOSITORY = 'proj-demo'
+export const REPOSITORY = 'https://github.com/majkutma/proj-demo'
 export const PATH = 'frontend'
