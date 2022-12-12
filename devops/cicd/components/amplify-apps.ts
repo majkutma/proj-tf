@@ -1,14 +1,8 @@
-// import {
-//   Stack,
-//   SecretValue,
-//   aws_codebuild as codebuild
-// } from 'aws-cdk-lib'
-// import * as amplify from '@aws-cdk/aws-amplify-alpha'
 import { TerraformStack, TerraformVariable } from 'cdktf'
 import * as aws from '@cdktf/provider-aws'
+
 import { getResourceId } from '../utils/param-utils'
-import { REPOSITORY, PATH } from '../constants/repo-info'
-import { MY_SECRET_VAL } from '../constants/.secrets'
+import { REPOSITORY_URL, REPOSITORY_FOLDER_PATH } from '../constants/repo-info'
 
 const bld = {
   version: 1,
@@ -39,7 +33,7 @@ const bld = {
           ]
         }
       },
-      appRoot: PATH
+      appRoot: REPOSITORY_FOLDER_PATH
     }
   ]
 }
@@ -59,28 +53,21 @@ const bld = {
 //     ...buildOptions
 //   })
 // }
-
-/**
- * Configuring myAmplify frontend
- */
-export const mySecret = (stack: TerraformStack): TerraformVariable => {
-  return new TerraformVariable(stack, 'my-secret', {
-    type: 'string',
-    description: 'github-token',
-    default: MY_SECRET_VAL,
-    sensitive: true
-  })
+const getAmplifyOptions = (secret: TerraformVariable): aws.amplifyApp.AmplifyAppConfig => {
+  return {
+    name: getResourceId('my-amplify-frontend'),
+    repository: REPOSITORY_URL,
+    accessToken: secret.value,
+    buildSpec: JSON.stringify(bld)
+  }
 }
 
 /**
  * Configuring myAmplify frontend
  */
 export const myAmplify = (stack: TerraformStack, secret: TerraformVariable): aws.amplifyApp.AmplifyApp => {
+  const amplifyOptions = getAmplifyOptions(secret)
   return new aws.amplifyApp.AmplifyApp(stack, 'my-amplify-frontend', {
-    // ...amplifyOptions
-    name: getResourceId('my-amplify-frontend'),
-    repository: REPOSITORY,
-    accessToken: secret.value,
-    buildSpec: JSON.stringify(bld)
+    ...amplifyOptions
   })
 }

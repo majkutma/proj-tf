@@ -1,9 +1,15 @@
 import { App, TerraformStack } from 'cdktf'
 import * as aws from '@cdktf/provider-aws'
+
 import { myBucket } from './s3-buckets'
-import { myIntegrationLambdaRole, myIntegrationLambda } from './lambda-functions'
-import { mySecret, myAmplify } from './amplify-apps'
-import { myOutput1, myOutput2, myOutput3 } from './outputs'
+import { myIamRole } from './iam-roles'
+import { myIntegrationLambda } from './lambda-functions'
+import { myVariable } from './variables'
+import { myAmplify } from './amplify-apps'
+import { myBranch } from './amplify-branches'
+import { myAccessTokenOutput, myBuildSpecOutput, myRoleOutput } from './outputs'
+import { AWS_REGION } from '../constants/proj-info'
+import { AWS_CREDENTIALS_PATH_LOCAL, AWS_USER_PROFILE_LOCAL } from '../constants/user-specific'
 
 /**
  * Configuting MyStack stack
@@ -13,26 +19,31 @@ export class MyStack extends TerraformStack {
     super(scope, id)
 
     new aws.provider.AwsProvider(this, 'AWS', {
-      sharedCredentialsFiles: ['/Users/fvg3843/.aws/credentials'],
-      profile: 'private',
-      region: 'us-east-1'
+      sharedCredentialsFiles: [AWS_CREDENTIALS_PATH_LOCAL],
+      profile: AWS_USER_PROFILE_LOCAL,
+      region: AWS_REGION
     })
 
     // Creating myBucket bucket
     myBucket(this)
-    // Creating myIntegrationLambdaRole role
-    const myRole = myIntegrationLambdaRole(this)
+
+    // Creating myIamRole role
+    const myRole = myIamRole(this)
     // Creating myIntegrationLambda function
     const lambda = myIntegrationLambda(this, myRole)
-    // Creating myBucket bucket
-    const secret = mySecret(this)
-    // Creating myBucket bucket
-    const amplify = myAmplify(this, secret)
-    // Creating myBucket bucket
-    myOutput1(this, amplify.accessToken)
-    // Creating myBucket bucket
-    myOutput2(this, amplify.buildSpec)
-    // Creating myBucket bucket
-    myOutput3(this, lambda.role)
+
+    // Creating myVariable variable
+    const variable = myVariable(this)
+    // Creating myAmplify app
+    const amplify = myAmplify(this, variable)
+    // Creating myBranch branch
+    myBranch(this, amplify)
+
+    // Creating myAccessTokenOutput output
+    myAccessTokenOutput(this, amplify.accessToken)
+    // Creating myBuildSpecOutput output
+    myBuildSpecOutput(this, amplify.buildSpec)
+    // Creating myRoleOutput output
+    myRoleOutput(this, lambda.role)
   }
 }

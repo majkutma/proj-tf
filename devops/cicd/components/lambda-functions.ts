@@ -1,20 +1,7 @@
 import { TerraformStack } from 'cdktf'
 import * as aws from '@cdktf/provider-aws'
-import { getResourceId } from '../utils/param-utils'
 
-const lambdaRolePolicy = {
-  Version: '2012-10-17',
-  Statement: [
-    {
-      Action: 'sts:AssumeRole',
-      Principal: {
-        Service: 'lambda.amazonaws.com'
-      },
-      Effect: 'Allow',
-      Sid: ''
-    }
-  ]
-}
+import { getResourceId } from '../utils/param-utils'
 
 const getLambdaOptions = (role: aws.iamRole.IamRole): aws.lambdaFunction.LambdaFunctionConfig => {
   return {
@@ -26,15 +13,6 @@ const getLambdaOptions = (role: aws.iamRole.IamRole): aws.lambdaFunction.LambdaF
   }
 }
 
-/**
- * Configuring myIntegrationLambda role
- */
-export const myIntegrationLambdaRole = (stack: TerraformStack): aws.iamRole.IamRole => {
-  return new aws.iamRole.IamRole(stack, 'my-integration-lambda-role', {
-    name: getResourceId('my-integration-lambda-role'),
-    assumeRolePolicy: JSON.stringify(lambdaRolePolicy)
-  })
-}
 /**
  * Configuring myIntegrationLambda function
  */

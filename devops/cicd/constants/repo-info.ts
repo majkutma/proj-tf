@@ -1,2 +1,2 @@
-export const REPOSITORY = 'https://github.com/majkutma/proj-demo'
-export const PATH = 'frontend'
+export const REPOSITORY_URL = 'https://github.com/majkutma/proj-demo'
+export const REPOSITORY_FOLDER_PATH = 'frontend'
